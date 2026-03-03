@@ -72,6 +72,7 @@ function generateType(obj, indent = '  ') {
 async function run() {
   try {
     const shouldRemove = process.argv.includes('--remove');
+    const allowUnused = process.argv.includes('--allow-unused');
     let messages = JSON.parse(fs.readFileSync(inputFile, 'utf-8'));
 
     // --- Part 1: Unused Key Detection & Removal ---
@@ -107,7 +108,9 @@ async function run() {
     const unusedKeys = Object.keys(allKeys).filter((key) => !allKeys[key]);
 
     if (unusedKeys.length > 0) {
-      if (shouldRemove) {
+      if (allowUnused) {
+        console.warn(`\nSkipping unused key check (--allow-unused). ${unusedKeys.length} keys not yet referenced in src.`);
+      } else if (shouldRemove) {
         console.warn('\n--remove flag detected. Removing unused i18n keys...');
         unusedKeys.forEach((key) => {
           deletePath(messages, key);
@@ -123,7 +126,10 @@ async function run() {
         console.error('Error: Please remove these keys or run with the --remove flag to fix automatically.');
         hasError = true;
       }
-    } else {
+    }
+    if (unusedKeys.length > 0 && allowUnused) {
+      // Continue to type generation
+    } else if (unusedKeys.length === 0) {
       console.log('✅ No unused i18n keys found.');
     }
 
