@@ -109,7 +109,9 @@ async function run() {
 
     if (unusedKeys.length > 0) {
       if (allowUnused) {
-        console.warn(`\nSkipping unused key check (--allow-unused). ${unusedKeys.length} keys not yet referenced in src.`);
+        console.warn(
+          `\nSkipping unused key check (--allow-unused). ${unusedKeys.length} keys not yet referenced in src.`,
+        );
       } else if (shouldRemove) {
         console.warn('\n--remove flag detected. Removing unused i18n keys...');
         unusedKeys.forEach((key) => {
