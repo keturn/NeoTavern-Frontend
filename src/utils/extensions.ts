@@ -233,7 +233,7 @@ const baseExtensionAPI: ExtensionAPI = {
     },
     getMessage: (index: number) => {
       const messages = useChatStore().activeChat?.messages ?? [];
-      return deepClone(messages[index]);
+      return cloneDeep(messages[index]);
     },
     getLastMessage: () => {
       const messages = useChatStore().activeChat?.messages ?? [];
@@ -945,18 +945,18 @@ const baseExtensionAPI: ExtensionAPI = {
   },
   api: {
     getConnectionProfiles: () => {
-      return deepClone(useApiStore().connectionProfiles);
+      return cloneDeep(useApiStore().connectionProfiles);
     },
     getConnectionProfile: (id: string) => {
       const profile = useApiStore().connectionProfiles.find((p) => p.id === id);
-      return profile ? deepClone(profile) : null;
+      return profile ? cloneDeep(profile) : null;
     },
     getModelsForProvider: async (provider: ApiProvider) => {
       const models = await useApiStore().getModelsForProvider(provider);
-      return deepClone(models);
+      return cloneDeep(models);
     },
     getProviders: () => {
-      return deepClone(api_providers);
+      return cloneDeep(api_providers);
     },
   },
 };
